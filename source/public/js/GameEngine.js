@@ -18,18 +18,19 @@ export default class GameEngine {
 
     displayEntity() {
         let container = document.querySelector(".farm-container");
-
         container.innerText = this.#currentEntity.name;
     }
 
     getEntity() {
         // Gets random index for the entity list 
         let selector = Math.random() * this.#entityList.length;
+        console.log(selector);
         // Retrieves entity from random index
         this.#currentEntity = this.#entityList[selector];
+        console.log(this.#currentEntity);
+        console.log(this.#entityList);
     }
 }
-
 
 function CreateEntities() {
     return [
