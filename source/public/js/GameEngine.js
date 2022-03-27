@@ -17,31 +17,52 @@ export default class GameEngine {
     }
 
     displayEntity() {
-        let container = document.querySelector(".farm-container");
-        container.innerText = this.#currentEntity.name;
+        // 
+        let container = document.querySelector('.farm-container');
+
+        let entityContainer = document.createElement('div');
+        entityContainer.classList.add('entity-container');
+
+        let entityImage = document.createElement('img');
+        entityImage.src = this.#currentEntity.imageURL;
+        // TODO What if no image supplied? 
+
+        let entityName = document.createElement('div');
+        entityName.classList.add('entity-name');
+        entityName.innerText = this.#currentEntity.name;
+
+        entityContainer.append(entityImage);
+        entityContainer.append(entityName);
+
+        container.append(entityContainer);
     }
 
     getEntity() {
         // Gets random index for the entity list 
-        let selector = Math.random() * this.#entityList.length;
-        console.log(selector);
+        let selector = Math.floor(Math.random() * this.#entityList.length);
         // Retrieves entity from random index
+        // TODO fix bug so random index dose not repeat i.e. 1 then 1 again
         this.#currentEntity = this.#entityList[selector];
-        console.log(this.#currentEntity);
-        console.log(this.#entityList);
     }
 }
 
 function CreateEntities() {
     return [
         new Entity({
-            name: 'cow'
+            name: 'Cow',
+            imageURL: './images/cow.png'
         }),
         new Entity({
-            name: 'duck'
+            name: 'Pig',
+            imageURL: './images/pig.png'
         }),
         new Entity({
-            name: 'pig'
+            name: 'Chicken',
+            imageURL: './images/chick3.png'
+        }),
+        new Entity({
+            name: 'Sheep',
+            imageURL: './images/sheep.png'
         })
     ]
 } 
