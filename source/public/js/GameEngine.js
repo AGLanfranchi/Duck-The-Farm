@@ -19,6 +19,7 @@ export default class GameEngine {
     displayEntity() {
         // Selects the farm container
         let container = document.querySelector('.farm-container');
+        container.innerHTML = '';
 
         // Creates entity-container
         let entityContainer = document.createElement('div');
