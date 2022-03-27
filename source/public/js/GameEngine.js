@@ -17,20 +17,28 @@ export default class GameEngine {
     }
 
     displayEntity() {
-        // 
+        // Selects the farm container
         let container = document.querySelector('.farm-container');
 
+        // Creates entity-container
         let entityContainer = document.createElement('div');
+        // Assigns class name
         entityContainer.classList.add('entity-container');
 
+        //Creates image tag 
         let entityImage = document.createElement('img');
+        // Assigns source 
         entityImage.src = this.#currentEntity.imageURL;
         // TODO What if no image supplied? 
 
+        //Creates div
         let entityName = document.createElement('div');
+        // Assigns class name
         entityName.classList.add('entity-name');
+         // Sets the inner text 
         entityName.innerText = this.#currentEntity.name;
 
+        // Adds elements to the DOM
         entityContainer.append(entityImage);
         entityContainer.append(entityName);
 
@@ -46,6 +54,7 @@ export default class GameEngine {
     }
 }
 
+// Function to load initial entities
 function CreateEntities() {
     return [
         new Entity({
