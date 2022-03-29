@@ -77,7 +77,7 @@ function CreateEntities() {
         new Entity({
             name: 'Pig',
             imageURL: './images/pig.png',
-            soundURL: './sounds/Cow.wav'
+            soundURL: './sounds/Pig.wav'
         }),
         new Entity({
             name: 'Chicken',
@@ -88,6 +88,11 @@ function CreateEntities() {
             name: 'Sheep',
             imageURL: './images/sheep.png',
             soundURL: './sounds/Sheep.wav'
+        }),
+        new Entity({
+            name: 'Tractor',
+            imageURL: './images/tractor.png',
+            soundURL: './sounds/Tractor.wav'
         })
     ]
 } 
