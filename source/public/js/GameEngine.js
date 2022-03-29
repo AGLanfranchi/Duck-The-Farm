@@ -1,4 +1,5 @@
-import Entity from "./Entity.js";
+import Entity from './Entity.js';
+import AudioEngine from './AudioEngine.js';
 
 // Game engine. Will hold all the entities, monitor the inputs such as keystrokes, 
 // gamepad inputs, touchscreen and controls the flow within the game.
@@ -8,12 +9,20 @@ export default class GameEngine {
     //Private variables
     #currentEntity;
     #entityList;
+    #audioEngine;
 
     //Constructors
     constructor() {
         // Stores entity list at start of gameEngine
         this.#entityList = CreateEntities();
+        // Creates new instance of audioEngine
+        this.#audioEngine = new AudioEngine();
         this.getEntity();
+    }
+
+    // Plays sound 
+    playSound() {
+        this.#audioEngine.playSound();
     }
 
     displayEntity() {
@@ -36,7 +45,7 @@ export default class GameEngine {
         let entityName = document.createElement('div');
         // Assigns class name
         entityName.classList.add('entity-name');
-         // Sets the inner text 
+        // Sets the inner text 
         entityName.innerText = this.#currentEntity.name;
 
         // Adds elements to the DOM
@@ -52,6 +61,8 @@ export default class GameEngine {
         // Retrieves entity from random index
         // TODO fix bug so random index dose not repeat i.e. 1 then 1 again
         this.#currentEntity = this.#entityList[selector];
+        // Load sound
+        this.#audioEngine.loadSound(this.#currentEntity.soundURL);
     }
 }
 
@@ -60,19 +71,23 @@ function CreateEntities() {
     return [
         new Entity({
             name: 'Cow',
-            imageURL: './images/cow.png'
+            imageURL: './images/cow.png',
+            soundURL: './sounds/Cow.wav'
         }),
         new Entity({
             name: 'Pig',
-            imageURL: './images/pig.png'
+            imageURL: './images/pig.png',
+            soundURL: './sounds/Cow.wav'
         }),
         new Entity({
             name: 'Chicken',
-            imageURL: './images/chick3.png'
+            imageURL: './images/chick3.png',
+            soundURL: './sounds/Chicken.wav'
         }),
         new Entity({
             name: 'Sheep',
-            imageURL: './images/sheep.png'
+            imageURL: './images/sheep.png',
+            soundURL: './sounds/Sheep.wav'
         })
     ]
 } 
