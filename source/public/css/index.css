@@ -2,7 +2,6 @@ body {
     background-image: url('../images/farm.jpg');
 }
 
-
 .farm-container {
     display: flex;
     align-items: center;
@@ -15,20 +14,9 @@ body {
 width: 500px;
 }
 
-.container {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    max-width: 80rem;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
 h1 {
     font-size: 5.4rem;
-    color: #fff;
+    color: rgb(0, 0, 0);
     margin-bottom: 5rem;
 }
 
@@ -64,7 +52,7 @@ h1 {
     margin-bottom: 1rem;
     text-decoration: none;
     color: rgb(255, 255, 255);
-    background: linear-gradient(90deg, rgb(8, 187, 254, 255)0%, rgb(43, 121, 255, 255)100%);
+    background: linear-gradient(90deg, rgb(8, 187, 254, 255), rgb(43, 121, 255, 255));
     border-radius: 4px;
 }
 

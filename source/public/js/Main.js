@@ -2,8 +2,8 @@ import GameEngine from "./GameEngine.js";
 // Create new instance of GameEngine
 // Constructor loads first entity
 const gameEngine = new GameEngine();
-// Display entity
-gameEngine.displayEntity();
+// Display welcome screen
+gameEngine.displayWelcomeScreen();
 
 // Add event listener for keyboard
 document.addEventListener('keydown', (event) => {
@@ -19,5 +19,10 @@ document.addEventListener('keydown', (event) => {
     // Press 'S' key to play sound of current entity
     if (event.code === 'KeyS') {
         gameEngine.playSound();
+    }
+
+    //Press 'A' key to play animation for current entity
+    if (event.code === 'KeyA') {
+        gameEngine.playAnimation();
     }
 });     
