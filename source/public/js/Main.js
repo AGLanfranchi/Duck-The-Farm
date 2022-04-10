@@ -27,3 +27,5 @@ document.addEventListener('keydown', (event) => {
         gameEngine.playAnimation();
     }
 });     
+
+// Install Chrome and enable developer mode on phone to talk to phone/PC
