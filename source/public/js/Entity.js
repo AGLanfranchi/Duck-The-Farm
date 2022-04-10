@@ -1,7 +1,8 @@
 // Entity class that holds entity data
 
 const DEFAULT_SETTINGS = {
-    animations: ['bounce', 'rubberBand', 'swing']
+    animations: ['bounce', 'flip', 'wobble'],
+    imageURL: './images/defaultImage.jpg'
 }
 
 export default class Entity {

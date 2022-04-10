@@ -81,7 +81,6 @@ export default class GameEngine {
         let entityImage = document.createElement('img');
         // Assigns source 
         entityImage.src = this.#currentEntity.imageURL;
-        // TODO What if no image supplied? Could supply default image, see in Entity.js
 
         //Creates div
         let entityName = document.createElement('div');
@@ -135,17 +134,19 @@ function CreateEntities() {
             name: 'Cow',
             imageURL: './images/cow.png',
             soundURL: './sounds/Cow.wav',
-            animations: ['shakeX', 'jello', 'tada']
+            animations: ['shakeX', 'jello', 'heartBeat']
         }),
         new Entity({
             name: 'Pig',
             imageURL: './images/pig.png',
             soundURL: './sounds/Pig.wav',
+            animations: ['flash', 'shakeY', 'tada']
         }),
         new Entity({
             name: 'Chicken',
             imageURL: './images/chick3.png',
-            soundURL: './sounds/Chicken.wav'
+            soundURL: './sounds/Chicken.wav',
+            animations: ['shakeX', 'jello', 'bounce']
         }),
         new Entity({
             name: 'Sheep',
@@ -155,7 +156,8 @@ function CreateEntities() {
         new Entity({
             name: 'Tractor',
             imageURL: './images/tractor.png',
-            soundURL: './sounds/Tractor.wav'
+            soundURL: './sounds/Tractor.wav',
+            animations: ['pulse', 'wobble', 'heartBeat']
         })
     ]
 }
