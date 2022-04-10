@@ -6,6 +6,7 @@ const DEFAULT_SETTINGS = {
 }
 
 export default class Entity {
+    id;
     soundURL;
     imageURL;
     name;

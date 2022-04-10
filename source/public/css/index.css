@@ -1,13 +1,55 @@
 body {
+    padding:0;
+    margin:0;
+    background-color: #a3a3a3;
+}
+
+#background{
+    aspect-ratio: 16/9;
     background-image: url('../images/farm.jpg');
+    background-repeat: no-repeat;
+    background-size: contain;
+    max-height: 100vh;
+    box-sizing: border-box;
+}
+
+.grid {
+    display: grid;
+    column-gap: 0;
+    width: 100%;
+    height:100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+#entityContainer1
+{
+    grid-column: 1 / span 2; 
+}
+#entityContainer2
+{
+    grid-column: 3 / span 2; 
+}
+#entityContainer3
+{
+    grid-column: 5 / span 2; 
+}
+#entityContainer4
+{
+    grid-row-start:2;
+    grid-column: 1 / span 3; 
+}
+#entityContainer5
+{
+    grid-row-start:2;
+    grid-column: 4 / span 3; 
 }
 
 .farm-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     height: 100vh;
-    flex-direction: column;
+}
+
+.entity-container.small img {
+    width: 100px;
 }
 
 .entity-container img {
@@ -26,45 +68,6 @@ h1 {
     font-size: 2em;
 }
 
-.flex-column {
-    display: flex;
-    flex-direction: column;
-}
-
-.flex-center {
-    justify-content: center;
-    align-items: center;
-}
-
-.justify-center {
-    justify-content: center;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.btn {
-    font-size: 2.4rem;
-    padding: 2rem 0;
-    width: 30rem;
-    text-align: center;
-    margin-bottom: 1rem;
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    background: linear-gradient(90deg, rgb(8, 187, 254, 255), rgb(43, 121, 255, 255));
-    border-radius: 4px;
-}
-
-.btn:hover {
-    cursor: pointer;
-    box-shadow: 0 0.4rem 1.4rem 0 rgba(83, 191, 231, 0.6);
-    transition: transform 150ms;
-    transform: scale(1.03);
-}
-
-.btn[disabled]:hover {
-    cursor: not-allowed;
-    box-shadow: none;
-    transform: none;
+.hide{
+    display: none;
 }

@@ -2,8 +2,9 @@ import GameEngine from "./GameEngine.js";
 // Create new instance of GameEngine
 // Constructor loads first entity
 const gameEngine = new GameEngine();
-// Display welcome screen
-gameEngine.displayWelcomeScreen();
+
+// Start the game
+gameEngine.start();
 
 // Add event listener for keyboard
 document.addEventListener('keydown', (event) => {

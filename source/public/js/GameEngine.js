@@ -12,8 +12,6 @@ export default class GameEngine {
     #entityList;
     #audioEngine;
     #maths;
-    // Stores the state of the welcome screen
-    #welcomeScreenOpen = true;
 
     //Constructors
     constructor() {
@@ -28,18 +26,10 @@ export default class GameEngine {
 
     // Plays sound 
     playSound() {
-        // If welcome screen is open, don't do anything
-        if (this.#welcomeScreenOpen) {
-            return;
-        }
         this.#audioEngine.playSound();
     }
 
     playAnimation() {
-        // If welcome screen is open, don't do anything
-        if (this.#welcomeScreenOpen) {
-            return;
-        }
         // Sets the currentEntity animations to the animations variable
         let animations = this.#currentEntity.animations;
         // Gets random index
@@ -48,29 +38,74 @@ export default class GameEngine {
         animateCSS('.entity-container', animations[index]);
     }
 
+    start(){
+        this.displayWelcomeScreen();
+        this.displayAllEntities();
+        
+        setTimeout(()=>{
+            let elem = document.getElementById('titleContainer');
+            elem.remove();
+        },5000);
+    }
+
+    displayAllEntities(){
+        [...this.#entityList].forEach((entity)=>{
+            let container = document.querySelector(`#entityContainer${entity.id}`);
+            
+            // Creates entity-container
+            let entityContainer = document.createElement('div');
+            // Assigns class name
+            entityContainer.classList.add('entity-container', 'small');
+            entityContainer.dataset.entityId = entity.id;
+            entityContainer.addEventListener('click',(e)=>{
+                let entityId = e.currentTarget.dataset.entityId;
+                this.hideSmallEntity(entityId);
+                this.#currentEntity = [...this.#entityList].find(x=> x.id === parseInt(entityId));
+                this.displayEntity();
+            })
+
+            //Creates image tag 
+            let entityImage = document.createElement('img');
+            // Assigns source 
+            entityImage.src = entity.imageURL;
+    
+            //Creates div
+            let entityName = document.createElement('div');
+            // Assigns class name
+            entityName.classList.add('entity-name');
+            // Sets the inner text 
+            entityName.innerText = entity.name;
+    
+            // Adds elements to the DOM
+            entityContainer.append(entityImage);
+            entityContainer.append(entityName);
+    
+            container.append(entityContainer);
+
+        });
+    }
+
+    hideSmallEntity(entityId){
+        let container = document.querySelector(`#entityContainer${entityId} .entity-container`);
+        container.classList.add('hide');
+    }
+
     displayWelcomeScreen() {
-        // Sets welcomeScreenOpen to true
-        this.#welcomeScreenOpen = true;
         let container = document.querySelector('.farm-container');
 
+        let titleContainer = document.createElement('div');
+        titleContainer.id = "titleContainer";
         let titleElm = document.createElement('h1');
         titleElm.innerText = 'Duck the Farm';
 
-        let startGameText = document.createElement('div');
-        startGameText.classList.add('welcome-text');
-        startGameText.innerText = 'Press any key';
-
-        container.append(titleElm);
-        container.append(startGameText);
+        titleContainer.append(titleElm);
+        container.append(titleContainer);
         // TODO find out how to work with timers. Within that timer need to call animateCSS
     }
 
     displayEntity() {
-        // Sets welcomeScreenOpen to false. When we display any entity, the welcome screen should be closed
-        this.#welcomeScreenOpen = false;
         // Selects the farm container
         let container = document.querySelector('.farm-container');
-        container.innerHTML = '';
 
         // Creates entity-container
         let entityContainer = document.createElement('div');
@@ -131,29 +166,34 @@ function GetRandomEntity(entityList, currentEntity) {
 function CreateEntities() {
     return [
         new Entity({
-            name: 'Cow',
-            imageURL: './images/cow.png',
-            soundURL: './sounds/Cow.wav',
-            animations: ['shakeX', 'jello', 'heartBeat']
-        }),
-        new Entity({
+            id: 1,
             name: 'Pig',
             imageURL: './images/pig.png',
             soundURL: './sounds/Pig.wav',
             animations: ['flash', 'shakeY', 'tada']
         }),
         new Entity({
+            id: 2,
+            name: 'Cow',
+            imageURL: './images/cow.png',
+            soundURL: './sounds/Cow.wav',
+            animations: ['shakeX', 'jello', 'heartBeat']
+        }),
+        new Entity({
+            id: 3,
             name: 'Chicken',
             imageURL: './images/chick3.png',
             soundURL: './sounds/Chicken.wav',
             animations: ['shakeX', 'jello', 'bounce']
         }),
         new Entity({
+            id: 5,
             name: 'Sheep',
             imageURL: './images/sheep.png',
             soundURL: './sounds/Sheep.wav'
         }),
         new Entity({
+            id: 4,
             name: 'Tractor',
             imageURL: './images/tractor.png',
             soundURL: './sounds/Tractor.wav',
