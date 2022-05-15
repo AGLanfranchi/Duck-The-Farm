@@ -2,7 +2,10 @@
 
 const DEFAULT_SETTINGS = {
     animations: ['bounce', 'flip', 'wobble'],
-    imageURL: './images/defaultImage.jpg'
+    imageURL: './images/defaultImage.jpg',
+    // Default animations for exit and entering 
+    entranceAnimation: 'slideInLeft',
+    exitAnimation: 'slideOutRight'
 }
 
 export default class Entity {

@@ -21,7 +21,37 @@ export default class GameEngine {
         this.#audioEngine = new AudioEngine();
         // Creates new instance of maths object
         this.#maths = new Maths();
-        this.getEntity();
+
+        // Starts background music
+        this.#audioEngine.loadAndPlayBackgroundMusic('./sounds/background.mp3');
+        // Hook up controls
+        this.addControlEvents();
+    }
+
+    // Event for controlling the sound
+    addControlEvents() {
+        // Selects the HTML element and listens for the input event i.e. clicking on sound bar
+        document.querySelector('.music-volume input').addEventListener('input', (event) => {
+            // Get the target of the event i.e. the range input. 
+            let elem = event.target;
+            // Turns selected value into fraction between 0 and 1
+            let val = elem.value / elem.max;
+            // Sets the volume to that value
+            this.#audioEngine.setBackgroundLevel(val);
+            // Display correct image
+            var elems = document.querySelectorAll('.music-volume svg');
+
+            for (const elem of elems) {
+                elem.classList.add('hide');
+            }
+
+            if (val > 0) {
+                document.querySelector('.music-volume .on').classList.remove('hide');
+            }
+            else {
+                document.querySelector('.music-volume .off').classList.remove('hide');
+            }
+        })
     }
 
     // Plays sound 
@@ -29,38 +59,66 @@ export default class GameEngine {
         this.#audioEngine.playSound();
     }
 
-    playAnimation() {
+    animateEntity() {
+        let selector = '.main-entity-container img';
+        // Animate entrance
+        animateCSS(selector, this.#currentEntity.entranceAnimation);
+        // Two seconds later
+        setTimeout(() => {
+            // Plays random animation
+            this.playRandomAnimation();
+        }, 2000)
+        setTimeout(() => {
+            // Add event listener to detect when exit animation has ended
+            document.querySelector(selector).addEventListener('animationend', () => {
+                // Delete main entity container 
+                document.querySelector('.main-entity-container').remove();
+                // Redisplay these small entity 
+                this.showSmallEntity(this.#currentEntity.id);
+                // Remove reference to main entity
+                this.#currentEntity = null;
+            })
+            // Plays exit animation
+            animateCSS(selector, this.#currentEntity.exitAnimation);
+        }, 4000)
+    }
+
+    playRandomAnimation() {
         // Sets the currentEntity animations to the animations variable
         let animations = this.#currentEntity.animations;
         // Gets random index
         let index = this.#maths.getRandomInteger(animations.length);
         // Plays animation
-        animateCSS('.entity-container', animations[index]);
+        animateCSS('.main-entity-container img', animations[index]);
     }
 
-    start(){
+    playEntranceAnimation() {
+        // Plays animation
+        animateCSS('.main-entity-container img', this.#currentEntity.entranceAnimation);
+    }
+
+    start() {
         this.displayWelcomeScreen();
         this.displayAllEntities();
-        
-        setTimeout(()=>{
-            let elem = document.getElementById('titleContainer');
-            elem.remove();
-        },5000);
+
+        document.getElementById('titleContainer').addEventListener('click', (event) => {
+            event.target.remove();
+            document.querySelector('.settings').classList.remove('hide');
+        });
     }
 
-    displayAllEntities(){
-        [...this.#entityList].forEach((entity)=>{
+    displayAllEntities() {
+        [...this.#entityList].forEach((entity) => {
             let container = document.querySelector(`#entityContainer${entity.id}`);
-            
+
             // Creates entity-container
             let entityContainer = document.createElement('div');
             // Assigns class name
-            entityContainer.classList.add('entity-container', 'small');
             entityContainer.dataset.entityId = entity.id;
-            entityContainer.addEventListener('click',(e)=>{
+            entityContainer.addEventListener('click', (e) => {
                 let entityId = e.currentTarget.dataset.entityId;
                 this.hideSmallEntity(entityId);
-                this.#currentEntity = [...this.#entityList].find(x=> x.id === parseInt(entityId));
+                this.#currentEntity = [...this.#entityList].find(x => x.id === parseInt(entityId));
                 this.displayEntity();
             })
 
@@ -68,26 +126,30 @@ export default class GameEngine {
             let entityImage = document.createElement('img');
             // Assigns source 
             entityImage.src = entity.imageURL;
-    
+
             //Creates div
             let entityName = document.createElement('div');
             // Assigns class name
             entityName.classList.add('entity-name');
             // Sets the inner text 
             entityName.innerText = entity.name;
-    
+
             // Adds elements to the DOM
             entityContainer.append(entityImage);
             entityContainer.append(entityName);
-    
+
             container.append(entityContainer);
 
         });
     }
 
-    hideSmallEntity(entityId){
-        let container = document.querySelector(`#entityContainer${entityId} .entity-container`);
+    hideSmallEntity(entityId) {
+        let container = document.querySelector(`#entityContainer${entityId} div`);
         container.classList.add('hide');
+    }
+    showSmallEntity(entityId) {
+        let container = document.querySelector(`#entityContainer${entityId} div`);
+        container.classList.remove('hide');
     }
 
     displayWelcomeScreen() {
@@ -98,19 +160,26 @@ export default class GameEngine {
         let titleElm = document.createElement('h1');
         titleElm.innerText = 'Duck the Farm';
 
+        let subTitleElm = document.createElement('h2');
+        subTitleElm.innerText = 'Start';
+
         titleContainer.append(titleElm);
+        titleContainer.append(subTitleElm)
         container.append(titleContainer);
         // TODO find out how to work with timers. Within that timer need to call animateCSS
     }
 
     displayEntity() {
+        //loads the sound
+        this.#audioEngine.loadSound(this.#currentEntity.soundURL);
+
         // Selects the farm container
         let container = document.querySelector('.farm-container');
 
         // Creates entity-container
         let entityContainer = document.createElement('div');
         // Assigns class name
-        entityContainer.classList.add('entity-container');
+        entityContainer.classList.add('main-entity-container');
 
         //Creates image tag 
         let entityImage = document.createElement('img');
@@ -129,12 +198,9 @@ export default class GameEngine {
         entityContainer.append(entityName);
 
         container.append(entityContainer);
-    }
 
-    getEntity() {
-        this.#currentEntity = GetRandomEntity(this.#entityList, this.#currentEntity)
-        // Load sound
-        this.#audioEngine.loadSound(this.#currentEntity.soundURL);
+        this.animateEntity();
+        this.playSound();
     }
 }
 
@@ -169,34 +235,34 @@ function CreateEntities() {
             id: 1,
             name: 'Pig',
             imageURL: './images/pig.png',
-            soundURL: './sounds/Pig.wav',
+            soundURL: './sounds/Pig.mp3',
             animations: ['flash', 'shakeY', 'tada']
         }),
         new Entity({
             id: 2,
             name: 'Cow',
             imageURL: './images/cow.png',
-            soundURL: './sounds/Cow.wav',
+            soundURL: './sounds/Cow.mp3',
             animations: ['shakeX', 'jello', 'heartBeat']
         }),
         new Entity({
             id: 3,
             name: 'Chicken',
             imageURL: './images/chick3.png',
-            soundURL: './sounds/Chicken.wav',
+            soundURL: './sounds/Chicken.mp3',
             animations: ['shakeX', 'jello', 'bounce']
         }),
         new Entity({
             id: 5,
             name: 'Sheep',
             imageURL: './images/sheep.png',
-            soundURL: './sounds/Sheep.wav'
+            soundURL: './sounds/Sheep.mp3'
         }),
         new Entity({
             id: 4,
             name: 'Tractor',
             imageURL: './images/tractor.png',
-            soundURL: './sounds/Tractor.wav',
+            soundURL: './sounds/Tractor.mp3',
             animations: ['pulse', 'wobble', 'heartBeat']
         })
     ]

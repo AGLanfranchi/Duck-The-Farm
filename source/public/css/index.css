@@ -2,6 +2,7 @@ body {
     padding:0;
     margin:0;
     background-color: #a3a3a3;
+    font-family: 'Kranky', cursive;
 }
 
 #background{
@@ -21,23 +22,32 @@ body {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
+.entity-container{
+    position: relative;
+    min-height: 100%;
+}
+
 #entityContainer1
 {
     grid-column: 1 / span 2; 
 }
+
 #entityContainer2
 {
     grid-column: 3 / span 2; 
 }
+
 #entityContainer3
 {
     grid-column: 5 / span 2; 
 }
+
 #entityContainer4
 {
     grid-row-start:2;
     grid-column: 1 / span 3; 
 }
+
 #entityContainer5
 {
     grid-row-start:2;
@@ -48,12 +58,35 @@ body {
     height: 100vh;
 }
 
-.entity-container.small img {
+.entity-container img {
+    position: absolute;
+    bottom:30%;
+    right:40%;
     width: 100px;
+    transition: width 150ms ease-in-out 
 }
 
-.entity-container img {
-    width: 500px;
+.entity-container img:hover {
+    position: absolute;
+    bottom:30%;
+    right:40%;
+    width: 150px;
+}
+
+.main-entity-container{
+    position: absolute;
+    width:100vw;
+    height: 100vh;
+    top:0;
+    left:0;
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    flex-direction: column;
+}
+
+.main-entity-container img {
+    width: 300px;
 }
 
 h1 {
@@ -62,12 +95,50 @@ h1 {
     margin-bottom: 5rem;
 }
 
+h2{
+    font-size: 3.4rem;
+}
+
 .entity-name {
-    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
     font-size: 2em;
 }
 
 .hide{
-    display: none;
+    display: none !important;
+}
+
+.settings {
+    position: absolute;
+    top:0;
+    right:0;
+    background: rgba(0,0,0,0.1);
+    border-radius:1rem;
+    margin:1em;
+    padding:1em;
+    display: flex;
+    align-items: center;
+}
+
+.music-volume {
+    display: flex;
+    align-items: center;
+}
+
+#titleContainer {
+    position: absolute;
+    width:100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    top:0;
+    left:0;
+    background-color: black;
+}
+
+#titleContainer h1,
+#titleContainer h2{
+    color:white;
 }
