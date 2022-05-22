@@ -12,7 +12,8 @@ export default class GameEngine {
     #entityList;
     #audioEngine;
     #maths;
-
+    #mainEntityBeingDisplayed = false
+    #grabAttentionTime = 5000;
     //Constructors
     constructor() {
         // Stores entity list at start of gameEngine
@@ -21,11 +22,24 @@ export default class GameEngine {
         this.#audioEngine = new AudioEngine();
         // Creates new instance of maths object
         this.#maths = new Maths();
+        // Gets the initial background music volume from storage 
+        // If doesn't exist, defaults to 1 AKA 100%
+        let backgroundVolume = localStorage.getItem('backgroundVolume') || 1;
+        let backgroundVolumeElement = document.getElementById('backgroundVolume');
+
+        backgroundVolumeElement.value = backgroundVolume * backgroundVolumeElement.max;
+
+        // Calls function for setting music icon
+        SetBackgroundMusicIcon(backgroundVolume);
 
         // Starts background music
-        this.#audioEngine.loadAndPlayBackgroundMusic('./sounds/background.mp3');
+        this.#audioEngine.loadAndPlayBackgroundMusic('./sounds/background.mp3', backgroundVolume);
         // Hook up controls
         this.addControlEvents();
+
+        //start loop for calling the grab attention function
+        this.grabAttentionTimer();
+        
     }
 
     // Event for controlling the sound
@@ -38,19 +52,12 @@ export default class GameEngine {
             let val = elem.value / elem.max;
             // Sets the volume to that value
             this.#audioEngine.setBackgroundLevel(val);
+            // Saves the background volume to local storage    
+            localStorage.setItem('backgroundVolume', val);
             // Display correct image
             var elems = document.querySelectorAll('.music-volume svg');
-
-            for (const elem of elems) {
-                elem.classList.add('hide');
-            }
-
-            if (val > 0) {
-                document.querySelector('.music-volume .on').classList.remove('hide');
-            }
-            else {
-                document.querySelector('.music-volume .off').classList.remove('hide');
-            }
+            // Calls function for setting music icon
+            SetBackgroundMusicIcon(val);
         })
     }
 
@@ -66,7 +73,7 @@ export default class GameEngine {
         // Two seconds later
         setTimeout(() => {
             // Plays random animation
-            this.playRandomAnimation();
+            this.playRandomAnimation(this.#currentEntity,'.main-entity-container img');
         }, 2000)
         setTimeout(() => {
             // Add event listener to detect when exit animation has ended
@@ -77,19 +84,21 @@ export default class GameEngine {
                 this.showSmallEntity(this.#currentEntity.id);
                 // Remove reference to main entity
                 this.#currentEntity = null;
+                // Set the flag for main entity being displayed to false
+                this.#mainEntityBeingDisplayed = false;
             })
             // Plays exit animation
             animateCSS(selector, this.#currentEntity.exitAnimation);
         }, 4000)
     }
 
-    playRandomAnimation() {
+    playRandomAnimation(entity, selector) {
         // Sets the currentEntity animations to the animations variable
-        let animations = this.#currentEntity.animations;
+        let animations = entity.animations;
         // Gets random index
         let index = this.#maths.getRandomInteger(animations.length);
         // Plays animation
-        animateCSS('.main-entity-container img', animations[index]);
+        animateCSS(selector, animations[index]);
     }
 
     playEntranceAnimation() {
@@ -102,7 +111,7 @@ export default class GameEngine {
         this.displayAllEntities();
 
         document.getElementById('titleContainer').addEventListener('click', (event) => {
-            event.target.remove();
+            document.querySelector('#titleContainer').remove();
             document.querySelector('.settings').classList.remove('hide');
         });
     }
@@ -113,6 +122,7 @@ export default class GameEngine {
 
             // Creates entity-container
             let entityContainer = document.createElement('div');
+            entityContainer.classList.add('entity-data');
             // Assigns class name
             entityContainer.dataset.entityId = entity.id;
             entityContainer.addEventListener('click', (e) => {
@@ -170,6 +180,8 @@ export default class GameEngine {
     }
 
     displayEntity() {
+        // Set the flag for main entity being displayed to true
+        this.#mainEntityBeingDisplayed = true;
         //loads the sound
         this.#audioEngine.loadSound(this.#currentEntity.soundURL);
 
@@ -201,6 +213,34 @@ export default class GameEngine {
 
         this.animateEntity();
         this.playSound();
+    }
+
+    grabAttentionTimer(){
+        setTimeout(() => {
+            // Plays random animation
+            this.grabAttention();
+            this.grabAttentionTimer();
+        }, this.#grabAttentionTime);
+    }
+
+    grabAttention() {
+        //only play if main entity is NOT being displayed
+        if(this.#mainEntityBeingDisplayed === true) return;
+        //Get random entity
+        let randomEntity = GetRandomEntity(this.#entityList);
+        //play random animation
+        this.playRandomAnimation(randomEntity, `[data-entity-id="${randomEntity.id}"] img`);
+    }
+}
+
+function SetBackgroundMusicIcon (backgroundVolume) {
+    if (backgroundVolume > 0) {
+        document.querySelector('.music-volume .on').classList.remove('hide');
+        document.querySelector('.music-volume .off').classList.add('hide');
+    }
+    else {
+        document.querySelector('.music-volume .off').classList.remove('hide');
+        document.querySelector('.music-volume .on').classList.add('hide');
     }
 }
 
@@ -267,6 +307,13 @@ function CreateEntities() {
         })
     ]
 }
+
+function PlayGrabAttentionAnimation() {
+    setTimeout(() => {
+
+    }, 1000);
+  }
+  
 // Taken from https://animate.style/
 const animateCSS = (element, animation, prefix = 'animate__') =>
     // We create a Promise and return it

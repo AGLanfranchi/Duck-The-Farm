@@ -10,8 +10,11 @@ body {
     background-image: url('../images/farm.jpg');
     background-repeat: no-repeat;
     background-size: contain;
-    max-height: 100vh;
     box-sizing: border-box;
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: auto;
+    position:relative;
 }
 
 .grid {
@@ -49,35 +52,41 @@ body {
     grid-column: 4 / span 3; 
 }
 
-.farm-container {
-    height: 100vh;
+.entity-container .entity-data {
+    position: absolute;
+    bottom:20%;
+    right:30%;
+    width: 100px;
 }
+
+#entityContainer4 .entity-data {
+    position: absolute;
+    bottom:20%;
+    right:10%;
+    width: 100px;
+}
+
 
 .entity-container img {
-    position: absolute;
-    bottom:30%;
-    right:40%;
+    transition: width 150ms ease-in-out;
     width: 100px;
-    transition: width 150ms ease-in-out 
 }
 
+
 .entity-container img:hover {
-    position: absolute;
-    bottom:30%;
-    right:40%;
     width: 150px;
 }
 
 .main-entity-container {
     position: absolute;
-    width:100vw;
-    height: 100vh;
     top:0;
     left:0;
     display: flex;
     align-items: center;
     justify-content: center; 
     flex-direction: column;
+    height:100%;
+    width:100%;
 }
 
 .main-entity-container img {

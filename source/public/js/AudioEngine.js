@@ -12,6 +12,7 @@ export default class AudioEngine {
     #currentAudioSource;
     #loadingSound = false;
     #bmSuspended = false;
+
     // Constructors
     constructor() {
         this.#audioCtx = new AudioContext();
@@ -28,7 +29,7 @@ export default class AudioEngine {
         })
     }
 
-    loadAndPlayBackgroundMusic(audioSourceURL) {
+    loadAndPlayBackgroundMusic(audioSourceURL, initialVolume) {
         window.fetch(audioSourceURL)
             // Turn HTML response into arrayBuffer
             .then(response => response.arrayBuffer())
@@ -45,6 +46,8 @@ export default class AudioEngine {
                 this.#backgroundAudioSource.buffer = audioBuffer;
                 // Loops the music. It wil NEVER END! Unless told to...
                 this.#backgroundAudioSource.loop = true;
+                // Sets initial background music volume
+                this.setBackgroundLevel(initialVolume);
                 // connect the AudioBufferSourceNode to the
                 // destination so we can hear the sound
                 this.#backgroundAudioSource.connect(this.#backgroundAudioCtxGainNode);
@@ -62,6 +65,7 @@ export default class AudioEngine {
     setBackgroundLevel(level) {
         this.#backgroundAudioCtxGainNode.gain.value = level;
     }
+
     loadSound(audioSourceURL) {
         this.#loadingSound = true;
         // Use fetch API to http request to load the audio file
