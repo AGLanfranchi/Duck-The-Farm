@@ -146,3 +146,30 @@ h2 {
 #titleContainer h2 {
     color:white;
 }
+
+@media screen and (max-width: 844px) {
+    .entity-name {
+        font-size: 1.5em;
+    }
+
+    .entity-container .entity-data {
+        bottom:20%;
+        right:30%;
+        width: 50px;
+    }
+    
+    #entityContainer4 .entity-data {
+
+        bottom:20%;
+        right:10%;
+        width: 50px;
+    }
+
+    .entity-container img {
+        width: 50px;
+    }
+    
+    .entity-container img:hover {
+        width: 75px;
+    }
+}
