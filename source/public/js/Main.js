@@ -1,6 +1,6 @@
 import GameEngine from "./GameEngine.js";
+
 // Create new instance of GameEngine
-// Constructor loads first entity
 const gameEngine = new GameEngine();
 
 // Start the game
