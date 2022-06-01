@@ -254,6 +254,15 @@ h2 {
 
 /* Arranges the application for screens up to 846px */
 @media screen and (max-width: 846px) {
+    h1 {
+        font-size: 4rem;
+        margin-bottom: 5rem;
+    }
+
+    h2 {
+        font-size: 3rem;
+    }
+    
     .entity-name {
         font-size: 1.5em;
     }
@@ -287,6 +296,15 @@ h2 {
 
 /* Arranges the application for screens up to 480px */
 @media screen and (max-width: 480px) {
+    h1 {
+        font-size: 3rem;
+        margin-bottom: 5rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+    
     .entity-name {
         font-size: 1em;
     }
