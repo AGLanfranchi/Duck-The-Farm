@@ -1,3 +1,6 @@
+/* PAGE FORMATTING ************************************************************/
+
+/* Defines the document's body */
 body {
     padding:0;
     margin:0;
@@ -5,6 +8,7 @@ body {
     font-family: 'Kranky', cursive;
 }
 
+/* Sets the background image and its settings */
 #background {
     aspect-ratio: 16/9;
     background-image: url('../images/farm.jpg');
@@ -17,6 +21,7 @@ body {
     position:relative;
 }
 
+/* Splits the page up into sections using a grid */
 .grid {
     display: grid;
     column-gap: 0;
@@ -25,33 +30,40 @@ body {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
+/* Formats the entity container */
 .entity-container {
     position: relative;
     min-height: 100%;
 }
 
+/* Formats the entity container 1 */
 #entityContainer1 {
     grid-column: 1 / span 2; 
 }
 
+/* Formats the entity container 2 */
 #entityContainer2 {
     grid-column: 3 / span 2; 
 }
 
+/* Formats the entity container 3 */
 #entityContainer3 {
     grid-column: 5 / span 2; 
 }
 
+/* Formats the entity container 4 */
 #entityContainer4 {
     grid-row-start:2;
     grid-column: 1 / span 3; 
 }
 
+/* Formats the entity container 5 */
 #entityContainer5 {
     grid-row-start:2;
     grid-column: 4 / span 3; 
 }
 
+/* Formats the entity containers title */
 .entity-container .entity-data {
     position: absolute;
     bottom:20%;
@@ -59,6 +71,7 @@ body {
     width: 100px;
 }
 
+/* Formats entity container 4 title */
 #entityContainer4 .entity-data {
     position: absolute;
     bottom:20%;
@@ -67,16 +80,19 @@ body {
 }
 
 
+/* Formats each entity container image */
 .entity-container img {
     transition: width 150ms ease-in-out;
-    width: 100px;
+    width: 190px;
 }
 
 
+/* Formats each entity container image hover */
 .entity-container img:hover {
-    width: 150px;
+    width: 230px;
 }
 
+/* Formats the main entity container when entity is chosen */
 .main-entity-container {
     position: absolute;
     top:0;
@@ -89,29 +105,35 @@ body {
     width:100%;
 }
 
+/* Formats the main entity container image when entity is chosen */
 .main-entity-container img {
     width: 300px;
 }
 
+/* Formats the start page main heading */
 h1 {
     font-size: 5.4rem;
     color: rgb(0, 0, 0);
     margin-bottom: 5rem;
 }
 
+/* Formats the start page 'start now' heading */
 h2 {
     font-size: 3.4rem;
 }
 
+/* Formats each entity name */
 .entity-name {
     font-weight: bold;
-    font-size: 2em;
+    font-size: 4em;
 }
+
 
 .hide {
     display: none !important;
 }
 
+/* Formats the volume bar */
 .settings {
     position: absolute;
     top:0;
@@ -147,29 +169,154 @@ h2 {
     color:white;
 }
 
-@media screen and (max-width: 844px) {
+/* MEDIA QUERIES ****************************************/
+
+/* Arranges the application for screens up to 1920px */
+@media screen and (max-width: 1920px) {
+    .entity-name {
+        font-size: 3em;
+    }
+
+    .entity-container .entity-data {
+        bottom:15%;
+        right:35%;
+        width: 70px;
+    }
+    
+    #entityContainer4 .entity-data {
+        bottom:15%;
+        right:10%;
+        width: 70px;
+    }
+
+    .entity-container img {
+        width: 120px;
+    }
+    
+    .entity-container img:hover {
+        width: 145px;
+    }
+}
+
+/* Arranges the application for screens up to 1280px */
+@media screen and (max-width: 1280px) {
+    .entity-name {
+        font-size: 2.5em;
+    }
+
+    .entity-container .entity-data {
+        bottom:20%;
+        right:40%;
+        width: 55px;
+    }
+    
+    #entityContainer4 .entity-data {
+        bottom:15%;
+        right:10%;
+        width: 55px;
+    }
+
+    .entity-container img {
+        width: 100px;
+    }
+    
+    .entity-container img:hover {
+        width: 125px;
+    }
+}
+
+/* Arranges the application for screens up to 1080px */
+@media screen and (max-width: 1080px) {
+    .entity-name {
+        font-size: 2em;
+    }
+
+    .entity-container .entity-data {
+        bottom:20%;
+        right:40%;
+        width: 50px;
+    }
+    
+    #entityContainer4 .entity-data {
+        bottom:20%;
+        right:15%;
+        width: 50px;
+    }
+
+    .entity-container img {
+        width: 85px;
+    }
+    
+    .entity-container img:hover {
+        width: 125px;
+    }
+}
+
+/* Arranges the application for screens up to 846px */
+@media screen and (max-width: 846px) {
     .entity-name {
         font-size: 1.5em;
     }
 
     .entity-container .entity-data {
-        bottom:20%;
-        right:30%;
-        width: 50px;
+        bottom:10%;
+        right:35%;
+        width:45px;
     }
     
     #entityContainer4 .entity-data {
-
-        bottom:20%;
-        right:10%;
-        width: 50px;
+        bottom:10%;
+        right:15%;
+        width:45px;
     }
 
     .entity-container img {
-        width: 50px;
+        width:75px;
     }
     
     .entity-container img:hover {
-        width: 75px;
+        width:85px;
+    }
+
+    .settings {
+        margin:0.4em;
+        padding:0.4em;
+        right: 70px;
+    }
+}
+
+/* Arranges the application for screens up to 480px */
+@media screen and (max-width: 480px) {
+    .entity-name {
+        font-size: 1em;
+    }
+
+    .entity-container .entity-data {
+        bottom:15%;
+        right:25%;
+        width: 45px;
+    }
+    
+    #entityContainer4 .entity-data {
+        bottom:15%;
+        right:5%;
+        width: 45px;
+    }
+
+    .entity-container img {
+        width: 45px;
+    }
+    
+    .entity-container img:hover {
+        width: 70px;
+    }
+
+    .main-entity-container img {
+        width: 200px;
+    }
+
+    .settings {
+        top:270px;
+        right: 90px;
     }
 }
