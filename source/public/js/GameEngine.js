@@ -15,6 +15,7 @@ export default class GameEngine {
     #canGrabAttention = false
     #grabAttentionTime = 8000;
     #entityToInteractWith = null;
+    #failedSounds = ['./sounds/incorrect01.mp3','./sounds/incorrect02.mp3','./sounds/incorrect03.mp3'];
 
     //Constructors
     constructor() {
@@ -164,7 +165,9 @@ export default class GameEngine {
                 
                 //check if they have clicked on the correct entity if not play wrong one sound
                 if(targetEntity != this.#entityToInteractWith){
-                    console.log("failed");
+                    let failSoundURL = GetRandomFailedSound(this.#failedSounds);
+                    this.#audioEngine.loadSound(failSoundURL);
+                    this.#audioEngine.playSound()
                     return;
                 }
 
@@ -296,6 +299,11 @@ export default class GameEngine {
 function GetRandomGrabAttentionSound(entity) {
     let index = new Maths().getRandomInteger(entity.grabAttentionSounds.length);
     return entity.grabAttentionSounds[index];
+}
+
+function GetRandomFailedSound(soundURLArray) {
+    let index = new Maths().getRandomInteger(soundURLArray.length);
+    return soundURLArray[index];
 }
 
 function SetBackgroundMusicIcon(backgroundVolume) {
