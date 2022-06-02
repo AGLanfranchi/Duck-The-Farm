@@ -13,7 +13,8 @@ export default class GameEngine {
     #audioEngine;
     #maths;
     #canGrabAttention = false
-    #grabAttentionTime = 5000;
+    #grabAttentionTime = 8000;
+
     //Constructors
     constructor() {
         // Stores entity list at start of gameEngine
@@ -39,7 +40,7 @@ export default class GameEngine {
 
         //start loop for calling the grab attention function
         this.grabAttentionTimer();
-        
+
     }
 
     // Event for controlling the sound
@@ -73,7 +74,7 @@ export default class GameEngine {
         // Two seconds later
         setTimeout(() => {
             // Plays random animation
-            this.playRandomAnimation(this.#currentEntity,'.main-entity-container img');
+            this.playRandomAnimation(this.#currentEntity, '.main-entity-container img');
         }, 2000)
         setTimeout(() => {
             // Add event listener to detect when exit animation has ended
@@ -179,7 +180,7 @@ export default class GameEngine {
         let titlePlayImage = document.createElement('img');
         titlePlayImage.src = './images/Play button.png';
         titlePlayImage.classList.add('play-image');
-        
+
         titleElm.append(titleImage);
         titleElm.append(titlePlayImage);
         titleContainer.append(titleElm);
@@ -222,7 +223,7 @@ export default class GameEngine {
         this.playSound();
     }
 
-    grabAttentionTimer(){
+    grabAttentionTimer() {
         setTimeout(() => {
             // Plays random animation
             this.grabAttention();
@@ -232,13 +233,13 @@ export default class GameEngine {
 
     grabAttention() {
         //only play if main entity is NOT being displayed
-        if(this.#canGrabAttention === false) return;
+        if (this.#canGrabAttention === false) return;
         //Get random entity
         let randomEntity = GetRandomEntity(this.#entityList);
         //play random animation
         this.playRandomAnimation(randomEntity, `[data-entity-id="${randomEntity.id}"] img`);
         //load random grab attention sound and play it
-        if(randomEntity.grabAttentionSounds){
+        if (randomEntity.grabAttentionSounds) {
             let fileLocation = GetRandomGrabAttentionSound(randomEntity);
             this.#audioEngine.loadSound(fileLocation);
             this.#audioEngine.playSound()
@@ -246,12 +247,12 @@ export default class GameEngine {
     }
 }
 
-function GetRandomGrabAttentionSound(entity){
+function GetRandomGrabAttentionSound(entity) {
     let index = new Maths().getRandomInteger(entity.grabAttentionSounds.length);
     return entity.grabAttentionSounds[index];
 }
 
-function SetBackgroundMusicIcon (backgroundVolume) {
+function SetBackgroundMusicIcon(backgroundVolume) {
     if (backgroundVolume > 0) {
         document.querySelector('.music-volume .on').classList.remove('hide');
         document.querySelector('.music-volume .off').classList.add('hide');
@@ -295,7 +296,7 @@ function CreateEntities() {
             imageURL: './images/pig.png',
             soundURL: './sounds/Pig.mp3',
             animations: ['flash', 'shakeY', 'tada'],
-            grabAttentionSounds: ['./sounds/FindPig01.mp3','./sounds/FindPig02.mp3','./sounds/FindPig03.mp3']
+            grabAttentionSounds: ['./sounds/FindPig01.mp3', './sounds/FindPig02.mp3', './sounds/FindPig03.mp3']
         }),
         new Entity({
             id: 2,
@@ -303,7 +304,7 @@ function CreateEntities() {
             imageURL: './images/cow.png',
             soundURL: './sounds/Cow.mp3',
             animations: ['shakeX', 'jello', 'heartBeat'],
-            grabAttentionSounds: ['./sounds/FindCow01.mp3','./sounds/FindCow02.mp3','./sounds/FindCow03.mp3']
+            grabAttentionSounds: ['./sounds/FindCow01.mp3', './sounds/FindCow02.mp3', './sounds/FindCow03.mp3']
         }),
         new Entity({
             id: 3,
@@ -311,14 +312,14 @@ function CreateEntities() {
             imageURL: './images/chick3.png',
             soundURL: './sounds/Chicken.mp3',
             animations: ['shakeX', 'jello', 'bounce'],
-            grabAttentionSounds: ['./sounds/FindChicken01.mp3','./sounds/FindChicken02.mp3','./sounds/FindChicken03.mp3']
+            grabAttentionSounds: ['./sounds/FindChicken01.mp3', './sounds/FindChicken02.mp3', './sounds/FindChicken03.mp3']
         }),
         new Entity({
             id: 5,
             name: 'Sheep',
             imageURL: './images/sheep.png',
             soundURL: './sounds/Sheep.mp3',
-            grabAttentionSounds: ['./sounds/FindSheep01.mp3','./sounds/FindSheep02.mp3','./sounds/FindSheep03.mp3']
+            grabAttentionSounds: ['./sounds/FindSheep01.mp3', './sounds/FindSheep02.mp3', './sounds/FindSheep03.mp3']
         }),
         new Entity({
             id: 4,
@@ -326,7 +327,7 @@ function CreateEntities() {
             imageURL: './images/tractor.png',
             soundURL: './sounds/Tractor.mp3',
             animations: ['pulse', 'wobble', 'heartBeat'],
-            grabAttentionSounds: ['./sounds/FindTractor01.mp3','./sounds/FindTractor02.mp3','./sounds/FindTractor03.mp3']
+            grabAttentionSounds: ['./sounds/FindTractor01.mp3', './sounds/FindTractor02.mp3', './sounds/FindTractor03.mp3']
         })
     ]
 }
@@ -335,8 +336,8 @@ function PlayGrabAttentionAnimation() {
     setTimeout(() => {
 
     }, 1000);
-  }
-  
+}
+
 // Taken from https://animate.style/
 const animateCSS = (element, animation, prefix = 'animate__') =>
     // We create a Promise and return it

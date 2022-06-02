@@ -112,10 +112,11 @@ body {
 
 /* Formats each entity name */
 .entity-name {
+    color:#fff;
+    text-shadow: 2px 2px 4px black;
     font-weight: bold;
     font-size: 4em;
 }
-
 
 .hide {
     display: none !important;
