@@ -161,13 +161,34 @@ h2 {
     flex-direction: column;
     top:0;
     left:0;
-    background-color: black;
+    background-image: url("../images/TitlePage.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-#titleContainer h1,
-#titleContainer h2 {
-    color:white;
+#titleContainer div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
+
+#titleContainer .play-image{
+    width:400px;
+    animation-name: wiggle;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count: infinite;
+    animation-duration: 2s;
+}
+
+@keyframes wiggle {
+    0% {transform: rotate(0deg);}
+    5% {transform: rotate(10deg);}
+    12% {transform: rotate(-10deg);}
+    25% {transform: rotate(20deg);}
+    37% {transform: rotate(-5deg);}
+    50% {transform: rotate(0deg);}
+  }
 
 /* MEDIA QUERIES ****************************************/
 
@@ -200,6 +221,13 @@ h2 {
 
 /* Arranges the application for screens up to 1280px */
 @media screen and (max-width: 1280px) {
+    #titleContainer .title-image{
+        width:1000px;
+    }
+    #titleContainer .play-image{
+        width:200px;
+    }
+
     .entity-name {
         font-size: 2.5em;
     }
@@ -254,6 +282,13 @@ h2 {
 
 /* Arranges the application for screens up to 846px */
 @media screen and (max-width: 846px) {
+    #titleContainer .title-image{
+        width:750px;
+    }
+    #titleContainer .play-image{
+        width:150px;
+    }
+
     h1 {
         font-size: 4rem;
         margin-bottom: 5rem;
@@ -296,6 +331,13 @@ h2 {
 
 /* Arranges the application for screens up to 480px */
 @media screen and (max-width: 480px) {
+    #titleContainer .title-image{
+        width:375px;
+    }
+    #titleContainer .play-image{
+        width:75px;
+    }
+
     h1 {
         font-size: 3rem;
         margin-bottom: 5rem;

@@ -12,7 +12,7 @@ export default class GameEngine {
     #entityList;
     #audioEngine;
     #maths;
-    #mainEntityBeingDisplayed = false
+    #canGrabAttention = false
     #grabAttentionTime = 5000;
     //Constructors
     constructor() {
@@ -85,7 +85,7 @@ export default class GameEngine {
                 // Remove reference to main entity
                 this.#currentEntity = null;
                 // Set the flag for main entity being displayed to false
-                this.#mainEntityBeingDisplayed = false;
+                this.#canGrabAttention = true;
             })
             // Plays exit animation
             animateCSS(selector, this.#currentEntity.exitAnimation);
@@ -113,6 +113,7 @@ export default class GameEngine {
         document.getElementById('titleContainer').addEventListener('click', (event) => {
             document.querySelector('#titleContainer').remove();
             document.querySelector('.settings').classList.remove('hide');
+            this.#canGrabAttention = true;
         });
     }
 
@@ -163,25 +164,31 @@ export default class GameEngine {
     }
 
     displayWelcomeScreen() {
-        let container = document.querySelector('.farm-container');
+        this.#canGrabAttention = false;
+        let container = document.querySelector('body');
 
         let titleContainer = document.createElement('div');
         titleContainer.id = "titleContainer";
-        let titleElm = document.createElement('h1');
-        titleElm.innerText = 'Duck the Farm';
 
-        let subTitleElm = document.createElement('h2');
-        subTitleElm.innerText = 'Start';
+        let titleElm = document.createElement('div');
 
+        let titleImage = document.createElement('img');
+        titleImage.src = './images/Title.png';
+        titleImage.classList.add('title-image');
+
+        let titlePlayImage = document.createElement('img');
+        titlePlayImage.src = './images/Play button.png';
+        titlePlayImage.classList.add('play-image');
+        
+        titleElm.append(titleImage);
+        titleElm.append(titlePlayImage);
         titleContainer.append(titleElm);
-        titleContainer.append(subTitleElm)
         container.append(titleContainer);
-        // TODO find out how to work with timers. Within that timer need to call animateCSS
     }
 
     displayEntity() {
         // Set the flag for main entity being displayed to true
-        this.#mainEntityBeingDisplayed = true;
+        this.#canGrabAttention = false;
         //loads the sound
         this.#audioEngine.loadSound(this.#currentEntity.soundURL);
 
@@ -225,12 +232,23 @@ export default class GameEngine {
 
     grabAttention() {
         //only play if main entity is NOT being displayed
-        if(this.#mainEntityBeingDisplayed === true) return;
+        if(this.#canGrabAttention === false) return;
         //Get random entity
         let randomEntity = GetRandomEntity(this.#entityList);
         //play random animation
         this.playRandomAnimation(randomEntity, `[data-entity-id="${randomEntity.id}"] img`);
+        //load random grab attention sound and play it
+        if(randomEntity.grabAttentionSounds){
+            let fileLocation = GetRandomGrabAttentionSound(randomEntity);
+            this.#audioEngine.loadSound(fileLocation);
+            this.#audioEngine.playSound()
+        }
     }
+}
+
+function GetRandomGrabAttentionSound(entity){
+    let index = new Maths().getRandomInteger(entity.grabAttentionSounds.length);
+    return entity.grabAttentionSounds[index];
 }
 
 function SetBackgroundMusicIcon (backgroundVolume) {
@@ -276,34 +294,39 @@ function CreateEntities() {
             name: 'Pig',
             imageURL: './images/pig.png',
             soundURL: './sounds/Pig.mp3',
-            animations: ['flash', 'shakeY', 'tada']
+            animations: ['flash', 'shakeY', 'tada'],
+            grabAttentionSounds: ['./sounds/FindPig01.mp3','./sounds/FindPig02.mp3','./sounds/FindPig03.mp3']
         }),
         new Entity({
             id: 2,
             name: 'Cow',
             imageURL: './images/cow.png',
             soundURL: './sounds/Cow.mp3',
-            animations: ['shakeX', 'jello', 'heartBeat']
+            animations: ['shakeX', 'jello', 'heartBeat'],
+            grabAttentionSounds: ['./sounds/FindCow01.mp3','./sounds/FindCow02.mp3','./sounds/FindCow03.mp3']
         }),
         new Entity({
             id: 3,
             name: 'Chicken',
             imageURL: './images/chick3.png',
             soundURL: './sounds/Chicken.mp3',
-            animations: ['shakeX', 'jello', 'bounce']
+            animations: ['shakeX', 'jello', 'bounce'],
+            grabAttentionSounds: ['./sounds/FindChicken01.mp3','./sounds/FindChicken02.mp3','./sounds/FindChicken03.mp3']
         }),
         new Entity({
             id: 5,
             name: 'Sheep',
             imageURL: './images/sheep.png',
-            soundURL: './sounds/Sheep.mp3'
+            soundURL: './sounds/Sheep.mp3',
+            grabAttentionSounds: ['./sounds/FindSheep01.mp3','./sounds/FindSheep02.mp3','./sounds/FindSheep03.mp3']
         }),
         new Entity({
             id: 4,
             name: 'Tractor',
             imageURL: './images/tractor.png',
             soundURL: './sounds/Tractor.mp3',
-            animations: ['pulse', 'wobble', 'heartBeat']
+            animations: ['pulse', 'wobble', 'heartBeat'],
+            grabAttentionSounds: ['./sounds/FindTractor01.mp3','./sounds/FindTractor02.mp3','./sounds/FindTractor03.mp3']
         })
     ]
 }
