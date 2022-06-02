@@ -152,6 +152,7 @@ body {
     background-image: url("../images/TitlePage.jpg");
     background-repeat: no-repeat;
     background-size: cover;
+    background-position: center;
 }
 
 #titleContainer div{
