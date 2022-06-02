@@ -14,6 +14,7 @@ export default class GameEngine {
     #maths;
     #canGrabAttention = false
     #grabAttentionTime = 8000;
+    #entityToInteractWith = null;
 
     //Constructors
     constructor() {
@@ -35,12 +36,22 @@ export default class GameEngine {
 
         // Starts background music
         this.#audioEngine.loadAndPlayBackgroundMusic('./sounds/background.mp3', backgroundVolume);
+
+        let sfxVolume = localStorage.getItem('sfxVolume') || 1;
+        let sfxVolumeElement = document.getElementById('sfxVolume');
+
+        sfxVolumeElement.value = sfxVolume * sfxVolumeElement.max;
+
+        this.#audioEngine.setSFXLevel(sfxVolume);
+        
+        // Calls function for setting music icon
+        SetSFXMusicIcon(sfxVolume);
+
         // Hook up controls
         this.addControlEvents();
 
-        //start loop for calling the grab attention function
+        //then start the loop for calling the grab attention function
         this.grabAttentionTimer();
-
     }
 
     // Event for controlling the sound
@@ -56,10 +67,27 @@ export default class GameEngine {
             // Saves the background volume to local storage    
             localStorage.setItem('backgroundVolume', val);
             // Display correct image
-            var elems = document.querySelectorAll('.music-volume svg');
+            document.querySelectorAll('.music-volume svg');
             // Calls function for setting music icon
             SetBackgroundMusicIcon(val);
         })
+
+        document.querySelector('.sfx-volume input').addEventListener('input', (event) => {
+            // Get the target of the event i.e. the range input. 
+            let elem = event.target;
+            // Turns selected value into fraction between 0 and 1
+            let val = elem.value / elem.max;
+            // Sets the volume to that value
+            this.#audioEngine.setSFXLevel(val);
+            // Saves the background volume to local storage    
+            localStorage.setItem('sfxVolume', val);
+            // Display correct image
+            document.querySelectorAll('.sfx-volume svg');
+            // Calls function for setting music icon
+            SetSFXMusicIcon(val);
+        })
+
+        
     }
 
     // Plays sound 
@@ -115,6 +143,8 @@ export default class GameEngine {
             document.querySelector('#titleContainer').remove();
             document.querySelector('.settings').classList.remove('hide');
             this.#canGrabAttention = true;
+            //play initial grab attention
+            this.grabAttention();
         });
     }
 
@@ -128,10 +158,24 @@ export default class GameEngine {
             // Assigns class name
             entityContainer.dataset.entityId = entity.id;
             entityContainer.addEventListener('click', (e) => {
+
                 let entityId = e.currentTarget.dataset.entityId;
+                let targetEntity = [...this.#entityList].find(x => x.id === parseInt(entityId));
+                
+                //check if they have clicked on the correct entity if not play wrong one sound
+                if(targetEntity != this.#entityToInteractWith){
+                    console.log("failed");
+                    return;
+                }
+
+                
                 this.hideSmallEntity(entityId);
-                this.#currentEntity = [...this.#entityList].find(x => x.id === parseInt(entityId));
+                this.#currentEntity = targetEntity;
                 this.displayEntity();
+
+                // Reset the entity that they are trying to find as they have found it
+                this.#entityToInteractWith = null;
+                
             })
 
             //Creates image tag 
@@ -235,12 +279,14 @@ export default class GameEngine {
         //only play if main entity is NOT being displayed
         if (this.#canGrabAttention === false) return;
         //Get random entity
-        let randomEntity = GetRandomEntity(this.#entityList);
+        if(this.#entityToInteractWith === null){
+            this.#entityToInteractWith = GetRandomEntity(this.#entityList);
+        }
         //play random animation
-        this.playRandomAnimation(randomEntity, `[data-entity-id="${randomEntity.id}"] img`);
+        this.playRandomAnimation(this.#entityToInteractWith, `[data-entity-id="${this.#entityToInteractWith.id}"] img`);
         //load random grab attention sound and play it
-        if (randomEntity.grabAttentionSounds) {
-            let fileLocation = GetRandomGrabAttentionSound(randomEntity);
+        if (this.#entityToInteractWith.grabAttentionSounds) {
+            let fileLocation = GetRandomGrabAttentionSound(this.#entityToInteractWith);
             this.#audioEngine.loadSound(fileLocation);
             this.#audioEngine.playSound()
         }
@@ -260,6 +306,23 @@ function SetBackgroundMusicIcon(backgroundVolume) {
     else {
         document.querySelector('.music-volume .off').classList.remove('hide');
         document.querySelector('.music-volume .on').classList.add('hide');
+    }
+}
+
+function SetSFXMusicIcon(sfxVolume){
+    if (sfxVolume >= 0.5) {
+        document.querySelector('.sfx-volume .high').classList.remove('hide');
+        document.querySelector('.sfx-volume .low').classList.add('hide');
+        document.querySelector('.sfx-volume .muted').classList.add('hide');
+    }else if (sfxVolume > 0) {
+        document.querySelector('.sfx-volume .high').classList.add('hide');
+        document.querySelector('.sfx-volume .low').classList.remove('hide');
+        document.querySelector('.sfx-volume .muted').classList.add('hide');
+    }
+    else {
+        document.querySelector('.sfx-volume .high').classList.add('hide');
+        document.querySelector('.sfx-volume .low').classList.add('hide');
+        document.querySelector('.sfx-volume .muted').classList.remove('hide');
     }
 }
 

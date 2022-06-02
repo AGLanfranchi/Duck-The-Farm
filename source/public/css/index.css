@@ -135,7 +135,8 @@ body {
     align-items: center;
 }
 
-.music-volume {
+.music-volume,
+.sfx-volume {
     display: flex;
     align-items: center;
 }

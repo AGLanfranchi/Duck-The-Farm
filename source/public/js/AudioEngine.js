@@ -12,6 +12,7 @@ export default class AudioEngine {
     #currentAudioSource;
     #loadingSound = false;
     #bmSuspended = false;
+    #sfxAudioCtxGainNode;
 
     // Constructors
     constructor() {
@@ -27,6 +28,15 @@ export default class AudioEngine {
                 document.removeEventListener(this);
             }
         })
+
+
+        // Initialise the sfx audio pipeline
+        // Create gain node to allow control of volume
+        this.#sfxAudioCtxGainNode = this.#audioCtx.createGain();
+        this.setSFXLevel(1);
+        // connect the AudioBufferSourceNode to the
+        // destination so we can hear the sound
+        this.#sfxAudioCtxGainNode.connect(this.#audioCtx.destination);
     }
 
     loadAndPlayBackgroundMusic(audioSourceURL, initialVolume) {
@@ -66,6 +76,11 @@ export default class AudioEngine {
         this.#backgroundAudioCtxGainNode.gain.value = level;
     }
 
+    // Sets the SFX volume  music 
+    setSFXLevel(level) {
+        this.#sfxAudioCtxGainNode.gain.value = level;
+    }
+
     loadSound(audioSourceURL) {
         this.#loadingSound = true;
         // Use fetch API to http request to load the audio file
@@ -98,11 +113,12 @@ export default class AudioEngine {
 
         //https://developer.mozilla.org/en-US/docs/Web/API/BaseAudioContext/createBufferSource
         this.#currentAudioSource = this.#audioCtx.createBufferSource();
-        // set the buffer in the AudioBufferSourceNode from the previously loaded buffer data
-        this.#currentAudioSource.buffer = this.#audioBuffer;
         // connect the AudioBufferSourceNode to the
         // destination so we can hear the sound
-        this.#currentAudioSource.connect(this.#audioCtx.destination);
+        this.#currentAudioSource.connect(this.#sfxAudioCtxGainNode);
+
+        // set the buffer in the AudioBufferSourceNode from the previously loaded buffer data
+        this.#currentAudioSource.buffer = this.#audioBuffer;
         // start the source playing
         this.#currentAudioSource.start();
     }
