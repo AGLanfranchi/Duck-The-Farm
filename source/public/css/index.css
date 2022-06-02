@@ -135,12 +135,14 @@ body {
     align-items: center;
 }
 
+/* Sets music and sfx bar */
 .music-volume,
 .sfx-volume {
     display: flex;
     align-items: center;
 }
 
+/* Sets the start screen  */
 #titleContainer {
     position: absolute;
     width:100vw;
@@ -157,6 +159,7 @@ body {
     background-position: center;
 }
 
+/* Container for image and play ico on title screen */
 #titleContainer div{
     display: flex;
     align-items: center;
@@ -172,6 +175,7 @@ body {
     animation-duration: 2s;
 }
 
+/* Makes the start button wiggle. See a API */
 @keyframes wiggle {
     0% {transform: rotate(0deg);}
     5% {transform: rotate(10deg);}

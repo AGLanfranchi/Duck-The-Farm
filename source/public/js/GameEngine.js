@@ -28,8 +28,9 @@ export default class GameEngine {
         // Gets the initial background music volume from storage 
         // If doesn't exist, defaults to 1 AKA 100%
         let backgroundVolume = localStorage.getItem('backgroundVolume') || 1;
-        let backgroundVolumeElement = document.getElementById('backgroundVolume');
 
+        // Make sure background volume input uses the local storage value as default
+        let backgroundVolumeElement = document.getElementById('backgroundVolume');
         backgroundVolumeElement.value = backgroundVolume * backgroundVolumeElement.max;
 
         // Calls function for setting music icon
@@ -38,11 +39,15 @@ export default class GameEngine {
         // Starts background music
         this.#audioEngine.loadAndPlayBackgroundMusic('./sounds/background.mp3', backgroundVolume);
 
+        // Gets the initial sfx music volume from storage 
+        // If doesn't exist, defaults to 1 AKA 100%
         let sfxVolume = localStorage.getItem('sfxVolume') || 1;
-        let sfxVolumeElement = document.getElementById('sfxVolume');
 
+        // Make sure sfx volume input uses the local storage value as default
+        let sfxVolumeElement = document.getElementById('sfxVolume');
         sfxVolumeElement.value = sfxVolume * sfxVolumeElement.max;
 
+        // Sets initial sfx volume level in the audio engine 
         this.#audioEngine.setSFXLevel(sfxVolume);
         
         // Calls function for setting music icon
@@ -136,6 +141,7 @@ export default class GameEngine {
         animateCSS('.main-entity-container img', this.#currentEntity.entranceAnimation);
     }
 
+    // Starts the game 
     start() {
         this.displayWelcomeScreen();
         this.displayAllEntities();
@@ -203,16 +209,21 @@ export default class GameEngine {
     }
 
     hideSmallEntity(entityId) {
+        // Gets entity container for specific entity ID and hides
         let container = document.querySelector(`#entityContainer${entityId} div`);
         container.classList.add('hide');
     }
+
     showSmallEntity(entityId) {
+        // Gets entity container for specific entity ID and removes hide class
         let container = document.querySelector(`#entityContainer${entityId} div`);
         container.classList.remove('hide');
     }
 
     displayWelcomeScreen() {
+        // Block attention grab whilst welcome screen is open
         this.#canGrabAttention = false;
+        // Generates HTML for welcome screen
         let container = document.querySelector('body');
 
         let titleContainer = document.createElement('div');
@@ -296,16 +307,19 @@ export default class GameEngine {
     }
 }
 
+// Gets random sound URL from array of grab attention sounds on an entity
 function GetRandomGrabAttentionSound(entity) {
     let index = new Maths().getRandomInteger(entity.grabAttentionSounds.length);
     return entity.grabAttentionSounds[index];
 }
 
+// Gets random sound URL from array of failed sounds
 function GetRandomFailedSound(soundURLArray) {
     let index = new Maths().getRandomInteger(soundURLArray.length);
     return soundURLArray[index];
 }
 
+// Displays the correct icon for the background music volume setting
 function SetBackgroundMusicIcon(backgroundVolume) {
     if (backgroundVolume > 0) {
         document.querySelector('.music-volume .on').classList.remove('hide');
@@ -317,6 +331,7 @@ function SetBackgroundMusicIcon(backgroundVolume) {
     }
 }
 
+// Displays the correct icon for the SFX volume setting
 function SetSFXMusicIcon(sfxVolume){
     if (sfxVolume >= 0.5) {
         document.querySelector('.sfx-volume .high').classList.remove('hide');
@@ -401,12 +416,6 @@ function CreateEntities() {
             grabAttentionSounds: ['./sounds/FindTractor01.mp3', './sounds/FindTractor02.mp3', './sounds/FindTractor03.mp3']
         })
     ]
-}
-
-function PlayGrabAttentionAnimation() {
-    setTimeout(() => {
-
-    }, 1000);
 }
 
 // Taken from https://animate.style/
