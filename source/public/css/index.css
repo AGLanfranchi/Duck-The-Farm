@@ -110,18 +110,6 @@ body {
     width: 300px;
 }
 
-/* Formats the start page main heading */
-h1 {
-    font-size: 5.4rem;
-    color: rgb(0, 0, 0);
-    margin-bottom: 5rem;
-}
-
-/* Formats the start page 'start now' heading */
-h2 {
-    font-size: 3.4rem;
-}
-
 /* Formats each entity name */
 .entity-name {
     font-weight: bold;
@@ -278,6 +266,10 @@ h2 {
     .entity-container img:hover {
         width: 125px;
     }
+
+    .settings {
+        padding:0.4em;
+    }
 }
 
 /* Arranges the application for screens up to 846px */
@@ -287,15 +279,6 @@ h2 {
     }
     #titleContainer .play-image{
         width:150px;
-    }
-
-    h1 {
-        font-size: 4rem;
-        margin-bottom: 5rem;
-    }
-
-    h2 {
-        font-size: 3rem;
     }
     
     .entity-name {
@@ -325,7 +308,46 @@ h2 {
     .settings {
         margin:0.4em;
         padding:0.4em;
-        right: 70px;
+        right: 20px;
+    }
+}
+
+/* Arranges the application for screens up to 640px */
+@media screen and (max-width: 645px) {
+    #titleContainer .title-image{
+        width:575px;
+    }
+    #titleContainer .play-image{
+        width:100px;
+    }
+    
+    .entity-name {
+        font-size: 1.3em;
+    }
+
+    .entity-container .entity-data {
+        bottom:10%;
+        right:35%;
+        width:45px;
+    }
+    
+    #entityContainer4 .entity-data {
+        bottom:10%;
+        right:15%;
+        width:45px;
+    }
+
+    .entity-container img {
+        width:75px;
+    }
+    
+    .entity-container img:hover {
+        width:85px;
+    }
+
+    .settings {
+        padding:0.2em;
+        right: 10px;
     }
 }
 
@@ -336,15 +358,6 @@ h2 {
     }
     #titleContainer .play-image{
         width:75px;
-    }
-
-    h1 {
-        font-size: 3rem;
-        margin-bottom: 5rem;
-    }
-
-    h2 {
-        font-size: 2rem;
     }
     
     .entity-name {
