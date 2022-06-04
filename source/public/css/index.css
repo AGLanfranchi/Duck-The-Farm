@@ -175,7 +175,7 @@ body {
     animation-duration: 2s;
 }
 
-/* Makes the start button wiggle. See a API */
+/* Makes the start button wiggle. See an API! */
 @keyframes wiggle {
     0% {transform: rotate(0deg);}
     5% {transform: rotate(10deg);}
