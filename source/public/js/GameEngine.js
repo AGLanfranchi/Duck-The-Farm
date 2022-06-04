@@ -15,7 +15,7 @@ export default class GameEngine {
     #canGrabAttention = false
     #grabAttentionTime = 8000;
     #entityToInteractWith = null;
-    #failedSounds = ['./sounds/incorrect01.mp3','./sounds/incorrect02.mp3','./sounds/incorrect03.mp3'];
+    #failedSounds = ['./sounds/incorrect01.mp3', './sounds/incorrect02.mp3', './sounds/incorrect03.mp3'];
 
     //Constructors
     constructor() {
@@ -49,7 +49,7 @@ export default class GameEngine {
 
         // Sets initial sfx volume level in the audio engine 
         this.#audioEngine.setSFXLevel(sfxVolume);
-        
+
         // Calls function for setting music icon
         SetSFXMusicIcon(sfxVolume);
 
@@ -93,7 +93,7 @@ export default class GameEngine {
             SetSFXMusicIcon(val);
         })
 
-        
+
     }
 
     // Plays sound 
@@ -168,23 +168,23 @@ export default class GameEngine {
 
                 let entityId = e.currentTarget.dataset.entityId;
                 let targetEntity = [...this.#entityList].find(x => x.id === parseInt(entityId));
-                
+
                 //check if they have clicked on the correct entity if not play wrong one sound
-                if(targetEntity != this.#entityToInteractWith){
+                if (targetEntity != this.#entityToInteractWith) {
                     let failSoundURL = GetRandomFailedSound(this.#failedSounds);
                     this.#audioEngine.loadSound(failSoundURL);
                     this.#audioEngine.playSound()
                     return;
                 }
 
-                
+
                 this.hideSmallEntity(entityId);
                 this.#currentEntity = targetEntity;
                 this.displayEntity();
 
                 // Reset the entity that they are trying to find as they have found it
                 this.#entityToInteractWith = null;
-                
+
             })
 
             //Creates image tag 
@@ -293,7 +293,7 @@ export default class GameEngine {
         //only play if main entity is NOT being displayed
         if (this.#canGrabAttention === false) return;
         //Get random entity
-        if(this.#entityToInteractWith === null){
+        if (this.#entityToInteractWith === null) {
             this.#entityToInteractWith = GetRandomEntity(this.#entityList);
         }
         //play random animation
@@ -332,12 +332,12 @@ function SetBackgroundMusicIcon(backgroundVolume) {
 }
 
 // Displays the correct icon for the SFX volume setting
-function SetSFXMusicIcon(sfxVolume){
+function SetSFXMusicIcon(sfxVolume) {
     if (sfxVolume >= 0.5) {
         document.querySelector('.sfx-volume .high').classList.remove('hide');
         document.querySelector('.sfx-volume .low').classList.add('hide');
         document.querySelector('.sfx-volume .muted').classList.add('hide');
-    }else if (sfxVolume > 0) {
+    } else if (sfxVolume > 0) {
         document.querySelector('.sfx-volume .high').classList.add('hide');
         document.querySelector('.sfx-volume .low').classList.remove('hide');
         document.querySelector('.sfx-volume .muted').classList.add('hide');

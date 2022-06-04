@@ -5,4 +5,3 @@ const gameEngine = new GameEngine();
 
 // Start the game
 gameEngine.start();
-     
