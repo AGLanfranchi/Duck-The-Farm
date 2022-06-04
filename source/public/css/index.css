@@ -418,6 +418,7 @@ body {
 
     .settings {
         top: 270px;
-        right: 10px;
+        right: -5px;
+        padding: 0em;
     }
 }
